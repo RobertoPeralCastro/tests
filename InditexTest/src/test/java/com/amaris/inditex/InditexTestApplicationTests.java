@@ -1,9 +1,7 @@
 package com.amaris.inditex;
 
 import inditex.entities.Prices;
-import inditex.enums.Curr;
 import inditex.repositories.PricesRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,8 +18,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -70,63 +68,9 @@ public class InditexTestApplicationTests
 	@ParameterizedTest
 	@MethodSource("pricesArguments") // six numbers
 	public void testReturnedValuesFound(int productId,int brandId,String stringDate, int priceList) throws ParseException, ParseException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
-		Date date=simpleDateFormat.parse(stringDate);
-		Prices priceResult = pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId,brandId,date,date);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss");
+		LocalDateTime dateTime = LocalDateTime.parse(stringDate, formatter);
+		Prices priceResult = pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId,brandId,dateTime,dateTime);
 		assert(priceResult.getPriceList()==priceList);
-	}
-
-
-	/**
-	 * Method executed before all the tests which loads data into database using hibernate entities.
-	 * @throws Exception
-	 */
-	@BeforeAll
-	public void loadTestData() throws Exception {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss");
-		Prices price1 = new Prices();
-		price1.setBrandId(1);
-		price1.setStartDate(simpleDateFormat.parse("2020-06-14-00.00.00"));
-		price1.setEndDate(simpleDateFormat.parse("2020-12-31-23.59.59"));
-		price1.setPriceList(1);
-		price1.setProductId(35455);
-		price1.setPriority(0);
-		price1.setPrice(35.50);
-		price1.setCurrency(Curr.EUR);
-		pricesRepository.save(price1);
-
-		Prices price2 = new Prices();
-		price2.setBrandId(1);
-		price2.setStartDate(simpleDateFormat.parse("2020-06-14-15.00.00"));
-		price2.setEndDate(simpleDateFormat.parse("2020-06-14-18.30.00"));
-		price2.setPriceList(2);
-		price2.setProductId(35455);
-		price2.setPriority(1);
-		price2.setPrice(25.45);
-		price2.setCurrency(Curr.EUR);
-		pricesRepository.save(price2);
-
-		Prices price3 = new Prices();
-		price3.setBrandId(1);
-		price3.setStartDate(simpleDateFormat.parse("2020-06-15-00.00.00"));
-		price3.setEndDate(simpleDateFormat.parse("2020-06-15-11.00.00"));
-		price3.setPriceList(3);
-		price3.setProductId(35455);
-		price3.setPriority(1);
-		price3.setPrice(30.50);
-		price3.setCurrency(Curr.EUR);
-		pricesRepository.save(price3);
-
-
-		Prices price4 = new Prices();
-		price4.setBrandId(1);
-		price4.setStartDate(simpleDateFormat.parse("2020-06-15-16.00.00"));
-		price4.setEndDate(simpleDateFormat.parse("2020-12-31-23.59.59"));
-		price4.setPriceList(4);
-		price4.setProductId(35455);
-		price4.setPriority(1);
-		price4.setPrice(38.95);
-		price4.setCurrency(Curr.EUR);
-		pricesRepository.save(price4);
 	}
 }

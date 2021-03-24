@@ -6,7 +6,8 @@ import inditex.repositories.PricesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class InditexTestService
@@ -22,17 +23,9 @@ public class InditexTestService
      * @return the information of the price in the entity Prices
      * @throws PriceNotFoundException
      */
-    public Prices getProductPriceForDateAndBrand(int productId, int brandId, Date applicationDate) throws PriceNotFoundException
+    public Optional<Prices> getProductPriceForDateAndBrand(int productId, int brandId, LocalDateTime applicationDate)
     {
-        Prices result = pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId,brandId,applicationDate,applicationDate);
-        if (result != null)
-        {
-            return result;
-        }
-        else
-        {
-            throw new PriceNotFoundException();
-        }
+        return Optional.ofNullable(pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId, brandId, applicationDate, applicationDate));
     }
 
 }

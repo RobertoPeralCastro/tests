@@ -4,7 +4,7 @@ import inditex.enums.Curr;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="prices")
@@ -17,9 +17,9 @@ public class Prices
     @Column(name="brand_id", nullable=false, unique=false)
     private int brandId;
     @Column(name="start_date", nullable=false, unique=false)
-    private Date startDate;
+    private LocalDateTime startDate;
     @Column(name="end_date", nullable=false, unique=false)
-    private Date endDate;
+    private LocalDateTime endDate;
     @Column(name="price_list", nullable=false, unique=false)
     private int priceList;
     @Column(name="product_id", nullable=false, unique=false)
