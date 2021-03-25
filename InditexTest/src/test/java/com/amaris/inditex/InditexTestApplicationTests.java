@@ -70,7 +70,7 @@ public class InditexTestApplicationTests
 	public void testReturnedValuesFound(int productId,int brandId,String stringDate, int priceList) throws ParseException, ParseException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss");
 		LocalDateTime dateTime = LocalDateTime.parse(stringDate, formatter);
-		Prices priceResult = pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId,brandId,dateTime,dateTime);
+		Prices priceResult = pricesRepository.getProductPriceByProductIdAndBrandIdAndDate(productId,brandId,dateTime);
 		assert(priceResult.getPriceList()==priceList);
 	}
 }

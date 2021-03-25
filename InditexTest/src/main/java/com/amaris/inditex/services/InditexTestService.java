@@ -25,7 +25,7 @@ public class InditexTestService
      */
     public Optional<Prices> getProductPriceForDateAndBrand(int productId, int brandId, LocalDateTime applicationDate)
     {
-        return Optional.ofNullable(pricesRepository.findFirstByProductIdAndBrandIdAndEndDateAfterAndStartDateBeforeOrderByPriorityDesc(productId, brandId, applicationDate, applicationDate));
+        return Optional.ofNullable(pricesRepository.getProductPriceByProductIdAndBrandIdAndDate(productId, brandId, applicationDate));
     }
 
 }

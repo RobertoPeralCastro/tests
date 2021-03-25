@@ -1,5 +1,6 @@
 package inditex.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import inditex.enums.Curr;
 import lombok.Data;
 
@@ -17,8 +18,10 @@ public class Prices
     @Column(name="brand_id", nullable=false, unique=false)
     private int brandId;
     @Column(name="start_date", nullable=false, unique=false)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH.mm.ss")
     private LocalDateTime startDate;
     @Column(name="end_date", nullable=false, unique=false)
+    @JsonFormat(pattern = "yyyy-MM-dd-HH.mm.ss")
     private LocalDateTime endDate;
     @Column(name="price_list", nullable=false, unique=false)
     private int priceList;
@@ -31,3 +34,4 @@ public class Prices
     @Enumerated(EnumType.STRING)
     private Curr currency;
 }
+
